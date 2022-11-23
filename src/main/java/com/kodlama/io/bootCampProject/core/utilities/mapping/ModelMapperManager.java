@@ -1,4 +1,4 @@
-package com.kodlama.io.bootCampProject.core.utilities.mapper;
+package com.kodlama.io.bootCampProject.core.utilities.mapping;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

@@ -7,53 +7,57 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlama.io.bootCampProject.business.abstracts.InstructorService;
 import com.kodlama.io.bootCampProject.business.requests.CreateInstructorRequest;
+import com.kodlama.io.bootCampProject.business.requests.GetInstructorRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateInstructorRequest;
 import com.kodlama.io.bootCampProject.business.responses.CreateInstructorResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetAllInstructorResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetInstructorResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateInstructorResponse;
+import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
+import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/instructors/")
 @AllArgsConstructor
-public class InstructorController {
+public class InstructorsController {
 
 	private final InstructorService instructorService;
 	
 	@GetMapping("getAll")
-	public List<GetAllInstructorResponse> getAll(){
+	public DataResult<List<GetAllInstructorResponse>>  getAll(){
 		return instructorService.getAll();
 	}
 	
 	@GetMapping("getAllByName")
-	public List<GetAllInstructorResponse> findByName(String name){
-		return instructorService.findByName(name);
+	public DataResult<List<GetAllInstructorResponse>>  findByName(@RequestBody GetInstructorRequest request){
+		return instructorService.findByName(request);
 	}
 	
 	@GetMapping("getById/{id}")
-	public GetInstructorResponse findById(@PathVariable int id) {
+	public DataResult<GetInstructorResponse>  findById(@PathVariable int id) {
 		return instructorService.findById(id);
 	}
 	
 	@PostMapping("add")
-	public CreateInstructorResponse add(CreateInstructorRequest request) {
+	public DataResult<CreateInstructorResponse>  add(@RequestBody CreateInstructorRequest request) {
 		return instructorService.add(request);
 	}
 	
 	@PutMapping("update")
-	public UpdateInstructorResponse update(UpdateInstructorRequest request) {
+	public DataResult<UpdateInstructorResponse>  update(@RequestBody UpdateInstructorRequest request) {
 		return instructorService.update(request);
 	}
 	
 	@DeleteMapping("deleteById/{id}")
-	public void delete(@PathVariable int id) {
-		instructorService.delete(id);
+	public Result delete(@PathVariable int id) {
+		return instructorService.delete(id);
 	}
 }

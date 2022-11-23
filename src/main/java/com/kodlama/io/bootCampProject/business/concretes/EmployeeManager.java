@@ -6,13 +6,19 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.EmployeeService;
+import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.CreateEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.requests.GetEmployeeRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateEmployeeRequest;
 import com.kodlama.io.bootCampProject.business.responses.CreateEmployeeResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetEmployeeResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetAllEmployeeResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateEmployeeResponse;
-import com.kodlama.io.bootCampProject.core.utilities.mapper.ModelMapperService;
+import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
+import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
+import com.kodlama.io.bootCampProject.core.utilities.results.Result;
+import com.kodlama.io.bootCampProject.core.utilities.results.SuccessDataResult;
+import com.kodlama.io.bootCampProject.core.utilities.results.SuccessResult;
 import com.kodlama.io.bootCampProject.entities.users.Employee;
 import com.kodlama.io.bootCampProject.repository.EmployeeRepository;
 
@@ -26,46 +32,52 @@ public class EmployeeManager implements EmployeeService{
 	private final ModelMapperService mapperService;
 	
 	@Override
-	public List<GetAllEmployeeResponse> getAll() {
-		return employeeRepository.findAll()
+	public DataResult<List<GetAllEmployeeResponse>>  getAll() {
+		List<GetAllEmployeeResponse> response= employeeRepository.findAll()
 				.stream()
 				.map(e-> mapperService.forResponse().map(e, GetAllEmployeeResponse.class))
 				.collect(Collectors.toList());
+		return new SuccessDataResult<List<GetAllEmployeeResponse>>(response, "getAll");
 	}
 	
 	@Override
-	public List<GetAllEmployeeResponse> getByName(String name) {
-		List<Employee> employee = employeeRepository.findByFirstName(name);
-		return employee
+	public DataResult<List<GetAllEmployeeResponse>>  getByName(GetEmployeeRequest request) {
+		List<Employee> employee = employeeRepository.findByFirstName(request.getFirstName());
+		List<GetAllEmployeeResponse> response = employee
 				.stream()
 				.map(e-> mapperService.forResponse().map(e, GetAllEmployeeResponse.class))
 				.collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<GetAllEmployeeResponse>>(response,"findByName");
 	}
 
 	@Override
-	public GetEmployeeResponse getById(int id) {
+	public DataResult<GetEmployeeResponse> getById(int id) {
 		Employee employee = employeeRepository.findById(id).orElseThrow();
-		return mapperService.forResponse().map(employee, GetEmployeeResponse.class);
+		GetEmployeeResponse response= mapperService.forResponse().map(employee, GetEmployeeResponse.class);
+		return new SuccessDataResult<GetEmployeeResponse>(response, "findById");
 	}
 
 	@Override
-	public CreateEmployeeResponse add(CreateEmployeeRequest request) {
-		Employee employee = mapperService.forRequest().map(request, Employee.class);
-		employee.setId(0);
-		employeeRepository.save(employee);
-		return mapperService.forResponse().map(employee, CreateEmployeeResponse.class);
-	}
-
-	@Override
-	public UpdateEmployeeResponse update(UpdateEmployeeRequest request) {
+	public DataResult<CreateEmployeeResponse> add(CreateEmployeeRequest request) {
 		Employee employee = mapperService.forRequest().map(request, Employee.class);
 		employeeRepository.save(employee);
-		return mapperService.forResponse().map(employee, UpdateEmployeeResponse.class);
+		CreateEmployeeResponse result =  mapperService.forResponse().map(employee, CreateEmployeeResponse.class);
+		return new SuccessDataResult<CreateEmployeeResponse>(result, Messages.EmployeeCreated);
 	}
 
 	@Override
-	public void delete(int id) {
+	public DataResult<UpdateEmployeeResponse> update(UpdateEmployeeRequest request) {
+		Employee employee = mapperService.forRequest().map(request, Employee.class);
+		employeeRepository.save(employee);
+		UpdateEmployeeResponse response= mapperService.forResponse().map(employee, UpdateEmployeeResponse.class);
+		return new SuccessDataResult<UpdateEmployeeResponse>(response, Messages.EmployeeUpdated);
+	}
+
+	@Override
+	public Result delete(int id) {
 		employeeRepository.deleteById(id);	
+		return new SuccessResult(Messages.EmployeeDeleted);
 	}
 
 }

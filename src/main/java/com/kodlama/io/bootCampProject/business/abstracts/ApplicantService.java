@@ -3,23 +3,26 @@ package com.kodlama.io.bootCampProject.business.abstracts;
 import java.util.List;
 
 import com.kodlama.io.bootCampProject.business.requests.CreateApplicantRequest;
+import com.kodlama.io.bootCampProject.business.requests.GetApplicantRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateApplicantRequest;
 import com.kodlama.io.bootCampProject.business.responses.CreateApplicantResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetAllApplicantResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetApplicantResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateApplicantResponse;
+import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
+import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 
 public interface ApplicantService {
 
-	List<GetAllApplicantResponse> getAll();
+	DataResult<List<GetAllApplicantResponse>>  getAll();
 	
-	List<GetAllApplicantResponse> getByName(String name);
+	DataResult<List<GetAllApplicantResponse>>  getByName(GetApplicantRequest request);
 	
-	GetApplicantResponse getById(int id);
+	DataResult<GetApplicantResponse>  getById(int id);
 	
-	CreateApplicantResponse add(CreateApplicantRequest request);
+	DataResult<CreateApplicantResponse>  add(CreateApplicantRequest request);
 	
-	UpdateApplicantResponse update(UpdateApplicantRequest request);
+	DataResult<UpdateApplicantResponse>  update(UpdateApplicantRequest request);
 	
-	void delete(int id);
+	Result delete(int id);
 }
