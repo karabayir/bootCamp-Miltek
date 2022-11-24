@@ -1,5 +1,7 @@
 package com.kodlama.io.bootCampProject.entities.users;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -13,5 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Applicant extends User {
+	
 	private String about;
+	
 }

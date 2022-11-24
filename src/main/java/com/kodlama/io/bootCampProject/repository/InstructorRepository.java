@@ -9,4 +9,8 @@ import com.kodlama.io.bootCampProject.entities.users.Instructor;
 public interface InstructorRepository extends JpaRepository<Instructor, Integer> {
 
 	List<Instructor> findByFirstName(String name);
+	
+	Instructor findByNationalIdentity(String identity);
+	
+	Instructor getInstructorById(int id);
 }

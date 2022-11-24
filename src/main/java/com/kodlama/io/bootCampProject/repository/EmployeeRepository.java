@@ -9,4 +9,8 @@ import com.kodlama.io.bootCampProject.entities.users.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
 	List<Employee> findByFirstName(String name);
+	
+	Employee findByNationalIdentity(String identity);
+	
+	Employee getEmployeeById(int id);
 }

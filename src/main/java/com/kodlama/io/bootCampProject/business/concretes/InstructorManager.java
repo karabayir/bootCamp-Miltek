@@ -14,6 +14,7 @@ import com.kodlama.io.bootCampProject.business.responses.CreateInstructorRespons
 import com.kodlama.io.bootCampProject.business.responses.GetAllInstructorResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetInstructorResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateInstructorResponse;
+import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
@@ -57,7 +58,7 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public DataResult<GetInstructorResponse> findById(int id) {
-		Instructor instructor = instructorRepository.findById(id).orElseThrow();
+		Instructor instructor = instructorRepository.findById(id).orElseThrow(()-> new BusinessException(id+Messages.InstructorIdException));
 		GetInstructorResponse response= mapperService.forResponse().map(instructor, GetInstructorResponse.class);
 		return new SuccessDataResult<GetInstructorResponse>(response, "findById");
 	}
@@ -65,6 +66,7 @@ public class InstructorManager implements InstructorService {
 	@Override
 	public DataResult<CreateInstructorResponse>  add(CreateInstructorRequest request) {
 		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
+		checkIfInstructorExistByNationalIdentity(request.getNationalIdentity());
 		instructorRepository.save(instructor);
 		CreateInstructorResponse response = mapperService.forResponse().map(instructor, CreateInstructorResponse.class);
 		return new SuccessDataResult<CreateInstructorResponse>(response, Messages.InstructorCreated);
@@ -73,6 +75,8 @@ public class InstructorManager implements InstructorService {
 	@Override
 	public DataResult<UpdateInstructorResponse>  update(UpdateInstructorRequest request) {
 		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
+		checkIfInstructorExistById(request.getId());
+		checkIfInstructorExistByNationalIdentity(request.getNationalIdentity());
 		instructorRepository.save(instructor);
 		UpdateInstructorResponse response= mapperService.forResponse().map(instructor, UpdateInstructorResponse.class);
 		return new SuccessDataResult<UpdateInstructorResponse>(response, Messages.InstructorUpdated);
@@ -80,8 +84,18 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public Result delete(int id) {
+		checkIfInstructorExistById(id);
 		instructorRepository.deleteById(id);
 	    return new SuccessResult(Messages.InstructorDeleted);
 	}
 
+	private void checkIfInstructorExistByNationalIdentity(String identity) {
+		if(instructorRepository.findByNationalIdentity(identity) != null)
+			throw new BusinessException(identity+ Messages.InstructorNationalIdentityException);
+	}
+	
+	private void checkIfInstructorExistById(int id) {
+		if(instructorRepository.getInstructorById(id) == null)
+			throw new BusinessException(id+Messages.InstructorIdException);
+	}
 }

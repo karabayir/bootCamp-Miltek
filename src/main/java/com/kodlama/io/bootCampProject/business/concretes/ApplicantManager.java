@@ -1,5 +1,6 @@
 package com.kodlama.io.bootCampProject.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import com.kodlama.io.bootCampProject.business.responses.CreateApplicantResponse
 import com.kodlama.io.bootCampProject.business.responses.GetAllApplicantResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetApplicantResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateApplicantResponse;
+import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
@@ -52,7 +54,7 @@ public class ApplicantManager implements ApplicantService {
 	
 	@Override
 	public DataResult<GetApplicantResponse>  getById(int id) {
-		Applicant applicant = applicantRepository.findById(id).orElseThrow();
+		Applicant applicant = applicantRepository.findById(id).orElseThrow(() -> new BusinessException(id+Messages.ApplicantIdException));
 		GetApplicantResponse response= mapperService.forResponse().map(applicant, GetApplicantResponse.class);
 		return new SuccessDataResult<GetApplicantResponse>(response, "getById");
 	}
@@ -60,6 +62,8 @@ public class ApplicantManager implements ApplicantService {
 	@Override
 	public DataResult<CreateApplicantResponse>  add(CreateApplicantRequest request) {
 		Applicant applicant = mapperService.forRequest().map(request, Applicant.class);
+		
+		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		applicantRepository.save(applicant);
 		CreateApplicantResponse response = mapperService.forResponse().map(applicant, CreateApplicantResponse.class);
 		return new SuccessDataResult<CreateApplicantResponse>(response, Messages.ApplicantCreated);
@@ -68,13 +72,27 @@ public class ApplicantManager implements ApplicantService {
 	@Override
 	public DataResult<UpdateApplicantResponse>  update(UpdateApplicantRequest request) {
 		Applicant applicant = mapperService.forRequest().map(request, Applicant.class);
+		checkIfEmployeeExistById(request.getId());
+		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		applicantRepository.save(applicant);
 		UpdateApplicantResponse response =  mapperService.forResponse().map(applicant, UpdateApplicantResponse.class);
 		return new SuccessDataResult<UpdateApplicantResponse>(response, Messages.ApplicantUpdated);
 	}
 	@Override
 	public Result delete(int id) {
+		checkIfEmployeeExistById(id);
 		applicantRepository.deleteById(id);
 		return new SuccessResult(Messages.ApplicantDeleted);
+	}
+	//rules
+	private void checkIfApplicantExistByNationalIdentity(String identity) {
+		
+		if(applicantRepository.findByNationalIdentity(identity) != null)
+			throw new BusinessException(identity+ Messages.ApplicantNationalIdentityException);
+	}
+	
+	private void checkIfEmployeeExistById(int id) {
+		if(applicantRepository.getApplicantById(id) == null)
+			throw new BusinessException(id+Messages.ApplicantIdException);
 	}
 }

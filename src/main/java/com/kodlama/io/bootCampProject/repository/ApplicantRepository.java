@@ -9,4 +9,8 @@ import com.kodlama.io.bootCampProject.entities.users.Applicant;
 public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
 	List<Applicant> findByFirstName(String name);
+	
+	Applicant findByNationalIdentity(String identity);
+	
+	Applicant getApplicantById(int id);
 }
