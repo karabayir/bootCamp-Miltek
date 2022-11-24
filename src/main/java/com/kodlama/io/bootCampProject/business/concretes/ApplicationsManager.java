@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.ApplicationsService;
+import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.CreateApplicationsRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateApplicationsRequest;
 import com.kodlama.io.bootCampProject.business.responses.CreateApplicationsResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetAllApplicationsResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetApplicationsResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateApplicationResponse;
+import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
@@ -38,29 +40,37 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<GetApplicationsResponse> getById(int id) {
-		Applications applications = applicationsRepository.findById(id).orElseThrow();
+		checkIfApplicationsExistById(id);
+		Applications applications = applicationsRepository.getApplicationById(id);
 		GetApplicationsResponse response = mapperService.forResponse().map(applications, GetApplicationsResponse.class);
 		return new SuccessDataResult<GetApplicationsResponse>(response, "getById Applications");
 	}
 	@Override
 	public DataResult<CreateApplicationsResponse> add(CreateApplicationsRequest request) {
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
+		applications.setId(0);
 		applicationsRepository.save(applications);
 		CreateApplicationsResponse response = mapperService.forResponse().map(applications, CreateApplicationsResponse.class);
-		return new SuccessDataResult<CreateApplicationsResponse>(response, "Applications add");
+		return new SuccessDataResult<CreateApplicationsResponse>(response, Messages.ApplicationCreated);
 	}
 	@Override
 	public DataResult<UpdateApplicationResponse> update(UpdateApplicationsRequest request) {
+		checkIfApplicationsExistById(request.getId());
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applicationsRepository.save(applications);
 		UpdateApplicationResponse response = mapperService.forResponse().map(applications, UpdateApplicationResponse.class);
-		return new SuccessDataResult<UpdateApplicationResponse>(response, "Applications update");
+		return new SuccessDataResult<UpdateApplicationResponse>(response, Messages.ApplicationUpdated);
 	}
 	@Override
 	public Result delete(int id) {
+		checkIfApplicationsExistById(id);
 		applicationsRepository.deleteById(id);
-		return new SuccessResult("Aplication deleted");
+		return new SuccessResult(Messages.ApplicationsDeleted);
 	}
 	
+	private void checkIfApplicationsExistById(int id) {
+		if(applicationsRepository.getApplicationById(id) == null)
+			throw new BusinessException(id+Messages.ApplicationIdException);
+	}
 	
 }

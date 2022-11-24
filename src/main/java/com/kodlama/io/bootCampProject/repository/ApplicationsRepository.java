@@ -6,4 +6,5 @@ import com.kodlama.io.bootCampProject.entities.applications.Applications;
 
 public interface  ApplicationsRepository  extends JpaRepository<Applications, Integer>{
 
+	Applications getApplicationById(int id);
 }

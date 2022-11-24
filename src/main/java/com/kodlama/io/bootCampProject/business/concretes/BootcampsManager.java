@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
+import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.CreateBootcampsRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateBootcampsRequest;
 import com.kodlama.io.bootCampProject.business.responses.CreateBootcampsResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetAllBootcampsResponse;
 import com.kodlama.io.bootCampProject.business.responses.GetBootcampsResponse;
 import com.kodlama.io.bootCampProject.business.responses.UpdateBootcampsResponse;
+import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
@@ -39,29 +41,36 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<GetBootcampsResponse> getById(int id) {
-		Bootcamps bootcamps = bootcampsRepository.findById(id).orElseThrow();
+		checkIfBootcampsExistById(id);
+		Bootcamps bootcamps = bootcampsRepository.getBootcampsById(id);
 		GetBootcampsResponse response = mapperService.forResponse().map(bootcamps, GetBootcampsResponse.class);
 		return new SuccessDataResult<GetBootcampsResponse>(response, "getById Bootcamps");
 	}
 	@Override
 	public DataResult<CreateBootcampsResponse> add(CreateBootcampsRequest request) {
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
+		bootcamps.setId(0);
 		bootcampsRepository.save(bootcamps);
 		CreateBootcampsResponse response = mapperService.forResponse().map(bootcamps, CreateBootcampsResponse.class);
-		return new SuccessDataResult<CreateBootcampsResponse>(response, "Bootcamps add");
+		return new SuccessDataResult<CreateBootcampsResponse>(response, Messages.BootcampsCreated);
 	}
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
+		checkIfBootcampsExistById(request.getId());
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
 		UpdateBootcampsResponse response = mapperService.forResponse().map(bootcamps, UpdateBootcampsResponse.class);
-		return new SuccessDataResult<UpdateBootcampsResponse>(response, "Bootcamps updated");
+		return new SuccessDataResult<UpdateBootcampsResponse>(response, Messages.BootcampsUpdated);
 	}
 	@Override
 	public Result delete(int id) {
+		checkIfBootcampsExistById(id);
 		bootcampsRepository.deleteById(id);
-		return new SuccessResult("Bootcamps deleted");
+		return new SuccessResult(Messages.BootcampsDeleted);
 	}
 	
-	
+	private void checkIfBootcampsExistById(int id) {
+		if(bootcampsRepository.getBootcampsById(id) == null)
+			throw new BusinessException(id+Messages.BootcampsIdException);
+	}
 }

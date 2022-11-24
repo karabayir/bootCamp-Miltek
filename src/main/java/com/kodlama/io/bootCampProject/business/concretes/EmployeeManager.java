@@ -54,7 +54,8 @@ public class EmployeeManager implements EmployeeService{
 
 	@Override
 	public DataResult<GetEmployeeResponse> getById(int id) {
-		Employee employee = employeeRepository.findById(id).orElseThrow(()-> new BusinessException(id+Messages.EmployeeIdException));
+		checkIfEmployeeExistById(id);
+		Employee employee = employeeRepository.getEmployeeById(id);
 		GetEmployeeResponse response= mapperService.forResponse().map(employee, GetEmployeeResponse.class);
 		return new SuccessDataResult<GetEmployeeResponse>(response, "findById");
 	}
@@ -70,8 +71,8 @@ public class EmployeeManager implements EmployeeService{
 
 	@Override
 	public DataResult<UpdateEmployeeResponse> update(UpdateEmployeeRequest request) {
-		Employee employee = mapperService.forRequest().map(request, Employee.class);
 		checkIfEmployeeExistById(request.getId());
+		Employee employee = mapperService.forRequest().map(request, Employee.class);
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		employeeRepository.save(employee);
 		UpdateEmployeeResponse response= mapperService.forResponse().map(employee, UpdateEmployeeResponse.class);

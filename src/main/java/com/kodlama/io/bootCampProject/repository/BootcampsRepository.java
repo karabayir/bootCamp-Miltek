@@ -6,4 +6,5 @@ import com.kodlama.io.bootCampProject.entities.Bootcamps;
 
 public interface BootcampsRepository extends JpaRepository<Bootcamps, Integer>{
 
+	Bootcamps getBootcampsById(int id);
 }

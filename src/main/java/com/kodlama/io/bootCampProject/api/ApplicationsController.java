@@ -51,7 +51,7 @@ public class ApplicationsController {
 	}
 	
 	@DeleteMapping("deleteById/{id}")
-	Result delete(int id) {
+	Result delete(@PathVariable int id) {
 		return applicationsService.delete(id);
 	}
 }

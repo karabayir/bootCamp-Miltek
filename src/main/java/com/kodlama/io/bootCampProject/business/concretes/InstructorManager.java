@@ -58,7 +58,8 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public DataResult<GetInstructorResponse> findById(int id) {
-		Instructor instructor = instructorRepository.findById(id).orElseThrow(()-> new BusinessException(id+Messages.InstructorIdException));
+		checkIfInstructorExistById(id);
+		Instructor instructor = instructorRepository.getInstructorById(id);
 		GetInstructorResponse response= mapperService.forResponse().map(instructor, GetInstructorResponse.class);
 		return new SuccessDataResult<GetInstructorResponse>(response, "findById");
 	}
@@ -74,8 +75,8 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public DataResult<UpdateInstructorResponse>  update(UpdateInstructorRequest request) {
-		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
 		checkIfInstructorExistById(request.getId());
+		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
 		checkIfInstructorExistByNationalIdentity(request.getNationalIdentity());
 		instructorRepository.save(instructor);
 		UpdateInstructorResponse response= mapperService.forResponse().map(instructor, UpdateInstructorResponse.class);
