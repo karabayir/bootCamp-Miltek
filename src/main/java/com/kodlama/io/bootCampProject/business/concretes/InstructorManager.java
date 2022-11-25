@@ -75,9 +75,7 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public DataResult<UpdateInstructorResponse>  update(UpdateInstructorRequest request) {
-		checkIfInstructorExistById(request.getId());
 		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
-		checkIfInstructorExistByNationalIdentity(request.getNationalIdentity());
 		instructorRepository.save(instructor);
 		UpdateInstructorResponse response= mapperService.forResponse().map(instructor, UpdateInstructorResponse.class);
 		return new SuccessDataResult<UpdateInstructorResponse>(response, Messages.InstructorUpdated);
