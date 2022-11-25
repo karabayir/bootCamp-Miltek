@@ -2,6 +2,8 @@ package com.kodlama.io.bootCampProject.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,12 +43,12 @@ public class BootcampsController {
 	}
 	
 	@PostMapping("add")
-	public DataResult<CreateBootcampsResponse>  add(@RequestBody CreateBootcampsRequest request){
+	public DataResult<CreateBootcampsResponse>  add(@Valid @RequestBody CreateBootcampsRequest request){
 		return bootcampsService.add(request);
 	}
 	
 	@PutMapping("update")
-	public DataResult<UpdateBootcampsResponse> update(@RequestBody UpdateBootcampsRequest request){
+	public DataResult<UpdateBootcampsResponse> update(@Valid @RequestBody UpdateBootcampsRequest request){
 		return bootcampsService.update(request);
 	}
 	

@@ -13,4 +13,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 	Applicant findByNationalIdentity(String identity);
 	
 	Applicant getApplicantById(int id);
+	
+
 }

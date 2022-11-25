@@ -23,4 +23,6 @@ public interface BootcampsService {
 	
 	Result delete(int id);
 	
+	void checkIfBootcampIsActive(int id);
+	
 }

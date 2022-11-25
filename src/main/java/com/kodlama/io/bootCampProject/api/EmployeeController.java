@@ -2,6 +2,8 @@ package com.kodlama.io.bootCampProject.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +39,7 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("getAllByName")
-	public DataResult<List<GetAllEmployeeResponse>>  getByName(@RequestBody GetEmployeeRequest request){
+	public DataResult<List<GetAllEmployeeResponse>>  getByName(@Valid @RequestBody GetEmployeeRequest request){
 		return employeeService.getByName(request);
 	}
 	
@@ -47,12 +49,12 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("add")
-	public DataResult<CreateEmployeeResponse>  add(@RequestBody CreateEmployeeRequest request) {
+	public DataResult<CreateEmployeeResponse>  add(@Valid @RequestBody CreateEmployeeRequest request) {
 		return employeeService.add(request);
 	}
 	
 	@PutMapping("update")
-	public DataResult<UpdateEmployeeResponse>  update(@RequestBody UpdateEmployeeRequest request) {
+	public DataResult<UpdateEmployeeResponse>  update(@Valid @RequestBody UpdateEmployeeRequest request) {
 		return employeeService.update(request);
 	}
 	

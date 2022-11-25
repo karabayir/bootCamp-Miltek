@@ -1,6 +1,5 @@
 package com.kodlama.io.bootCampProject.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,6 @@ public class ApplicantManager implements ApplicantService {
 	@Override
 	public DataResult<CreateApplicantResponse>  add(CreateApplicantRequest request) {
 		Applicant applicant = mapperService.forRequest().map(request, Applicant.class);
-		
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		applicantRepository.save(applicant);
 		CreateApplicantResponse response = mapperService.forResponse().map(applicant, CreateApplicantResponse.class);
@@ -95,4 +93,5 @@ public class ApplicantManager implements ApplicantService {
 		if(applicantRepository.getApplicantById(id) == null)
 			throw new BusinessException(id+Messages.ApplicantIdException);
 	}
+	
 }

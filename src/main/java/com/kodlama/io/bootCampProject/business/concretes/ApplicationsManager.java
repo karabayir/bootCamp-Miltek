@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.ApplicationsService;
+import com.kodlama.io.bootCampProject.business.abstracts.BlacklistService;
+import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.CreateApplicationsRequest;
 import com.kodlama.io.bootCampProject.business.requests.UpdateApplicationsRequest;
@@ -20,6 +22,7 @@ import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessDataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessResult;
 import com.kodlama.io.bootCampProject.entities.applications.Applications;
+import com.kodlama.io.bootCampProject.entities.users.User;
 import com.kodlama.io.bootCampProject.repository.ApplicationsRepository;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +33,10 @@ public class ApplicationsManager implements ApplicationsService {
 
 	private final ApplicationsRepository applicationsRepository;
 	private final ModelMapperService mapperService;
+	private final BlacklistService blacklistService;
+
+	
+	private BootcampsService bootcampsService;
 	@Override
 	public DataResult<List<GetAllApplicationsResponse>> getAll() {
 		List<GetAllApplicationsResponse> response = applicationsRepository.findAll()
@@ -47,6 +54,9 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<CreateApplicationsResponse> add(CreateApplicationsRequest request) {
+		checkIfUserBlacklist(request.getUserId());
+		checkIfUserHasApplication(request.getUserId());
+		bootcampsService.checkIfBootcampIsActive(request.getBootcampsId());
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applications.setId(0);
 		applicationsRepository.save(applications);
@@ -72,5 +82,16 @@ public class ApplicationsManager implements ApplicationsService {
 		if(applicationsRepository.getApplicationById(id) == null)
 			throw new BusinessException(id+Messages.ApplicationIdException);
 	}
+	
+	private void  checkIfUserHasApplication(int id) {
+		if(applicationsRepository.existsApplicationsByUserId(id))
+			throw new BusinessException(id+Messages.UserHasApplication);
+	}
+	
+	private void  checkIfUserBlacklist(int id) {
+		if(blacklistService.existsBlacklistByApplicantId(id))
+			throw new BusinessException(id+" numaralı kullanıcı karalistede");
+	}
+
 	
 }

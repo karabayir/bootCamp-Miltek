@@ -29,5 +29,24 @@ public class Messages {
 	public static final String BootcampsUpdated = "Bootcamps updated";
 	public static final String BootcampsDeleted = "Bootcamps deleted";
 	public static final String BootcampsIdException = " ,Bootcamps id is not exist";
+	public static final String BootcampActiveException = "Bootcamps is not active";
+	
+	public static final String BlacklistCreated = "Blacklist created";
+	public static final String BlacklistUpdated = "Blacklist updated";
+	public static final String BlacklistDeleted = "Blacklist deleted";
+	public static final String BlacklistIdException = ", Blacklist id is not exist";
+	
+	public static final String UserHasApplication = ", User alread has application";
+	
+	public static final String NationalIdentityNumberSizeException = "TCKN 11 haneli olmalıdır";
+	public static final String NationalIdentityBlankException = "TCKN boş bırakılamaz";
+	public static final String DateBlankException = "Doğum  yılı boş bırakılamaz";
+	public static final String NameBlankException = "İsim veya soyisim boş bırakılamaz";
+	public static final String MailBlankException = "Mail Adresi boş bırakılamaz";
+	public static final String PasswordBlankException = "Parola boş bırakılamaz";
+	public static final String IdBlankException = "id boş bırakılamaz";
+	public static final String StateBlankException = "state boş bırakılamaz";
+	
+	
 	
 }

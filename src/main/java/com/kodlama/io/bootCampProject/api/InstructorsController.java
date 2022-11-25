@@ -2,6 +2,8 @@ package com.kodlama.io.bootCampProject.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,22 +39,22 @@ public class InstructorsController {
 	}
 	
 	@GetMapping("getAllByName")
-	public DataResult<List<GetAllInstructorResponse>>  findByName(@RequestBody GetInstructorRequest request){
+	public DataResult<List<GetAllInstructorResponse>>  findByName(@Valid @RequestBody GetInstructorRequest request){
 		return instructorService.findByName(request);
 	}
 	
 	@GetMapping("getById/{id}")
-	public DataResult<GetInstructorResponse>  findById(@PathVariable int id) {
+	public DataResult<GetInstructorResponse>  findById(@Valid @PathVariable int id) {
 		return instructorService.findById(id);
 	}
 	
 	@PostMapping("add")
-	public DataResult<CreateInstructorResponse>  add(@RequestBody CreateInstructorRequest request) {
+	public DataResult<CreateInstructorResponse>  add(@Valid @RequestBody CreateInstructorRequest request) {
 		return instructorService.add(request);
 	}
 	
 	@PutMapping("update")
-	public DataResult<UpdateInstructorResponse>  update(@RequestBody UpdateInstructorRequest request) {
+	public DataResult<UpdateInstructorResponse>  update(@Valid @RequestBody UpdateInstructorRequest request) {
 		return instructorService.update(request);
 	}
 	

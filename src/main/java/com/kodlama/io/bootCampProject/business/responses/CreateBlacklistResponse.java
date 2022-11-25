@@ -9,14 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateApplicantResponse {
+public class CreateBlacklistResponse {
 
 	private int id;
-	private String nationalIdentity;
-	private LocalDate   dateOfBirth;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String password;
-	private String about;
+	private int applicantId;
+	private LocalDate date;
+	private String reason;
 }

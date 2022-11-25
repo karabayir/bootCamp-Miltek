@@ -10,7 +10,6 @@ import com.kodlama.io.bootCampProject.business.responses.GetApplicationsResponse
 import com.kodlama.io.bootCampProject.business.responses.UpdateApplicationResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
-
 public interface ApplicationsService {
 
 	DataResult<List<GetAllApplicationsResponse>> getAll();
@@ -22,4 +21,6 @@ public interface ApplicationsService {
 	DataResult<UpdateApplicationResponse> update(UpdateApplicationsRequest request);
 	
 	Result delete(int id);
+	
+	//void deleteApplicationsByUserId(int userId);
 }

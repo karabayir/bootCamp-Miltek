@@ -20,6 +20,7 @@ import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessDataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessResult;
 import com.kodlama.io.bootCampProject.entities.Bootcamps;
+import com.kodlama.io.bootCampProject.entities.BootcampsState;
 import com.kodlama.io.bootCampProject.repository.BootcampsRepository;
 
 import lombok.AllArgsConstructor;
@@ -73,4 +74,12 @@ public class BootcampsManager implements BootcampsService {
 		if(bootcampsRepository.getBootcampsById(id) == null)
 			throw new BusinessException(id+Messages.BootcampsIdException);
 	}
+	
+	@Override
+	public void checkIfBootcampIsActive(int id) {
+		Bootcamps bootcamps = bootcampsRepository.findById(id).orElseThrow();
+		if(bootcamps.getState()== BootcampsState.CLOSED)
+			throw new BusinessException(Messages.BootcampActiveException);
+	}
+	
 }
