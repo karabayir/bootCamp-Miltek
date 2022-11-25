@@ -65,7 +65,6 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<UpdateApplicationResponse> update(UpdateApplicationsRequest request) {
-		checkIfApplicationsExistById(request.getId());
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applicationsRepository.save(applications);
 		UpdateApplicationResponse response = mapperService.forResponse().map(applications, UpdateApplicationResponse.class);

@@ -70,7 +70,6 @@ public class ApplicantManager implements ApplicantService {
 	@Override
 	public DataResult<UpdateApplicantResponse>  update(UpdateApplicantRequest request) {
 		Applicant applicant = mapperService.forRequest().map(request, Applicant.class);
-		checkIfEmployeeExistById(request.getId());
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		applicantRepository.save(applicant);
 		UpdateApplicantResponse response =  mapperService.forResponse().map(applicant, UpdateApplicantResponse.class);

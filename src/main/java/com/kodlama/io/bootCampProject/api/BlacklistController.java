@@ -26,7 +26,7 @@ import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/blacklist")
+@RequestMapping("/api/v1/blacklists/")
 @AllArgsConstructor
 public class BlacklistController {
 
@@ -37,13 +37,13 @@ public class BlacklistController {
 		return blacklistService.getAll();
 	}
 	
-	@GetMapping("findById/{id}")
+	@GetMapping("getById/{id}")
 	public DataResult<GetBlackListResponse> getById(@PathVariable int id){ 
 		return blacklistService.getById(id);
 	}
 	
 	@PostMapping("add")
-	public DataResult<CreateBlacklistResponse> add( @RequestBody CreateBlacklistRequest request){
+	public DataResult<CreateBlacklistResponse> add(@Valid @RequestBody CreateBlacklistRequest request){
 		return blacklistService.add(request);
 	}
 	
@@ -53,7 +53,7 @@ public class BlacklistController {
 	}
 	
 	@DeleteMapping("deleteById/{id}")
-	Result delete(int id) {
+	Result delete(@PathVariable int id) {
 		return blacklistService.delete(id);
 	}
 }

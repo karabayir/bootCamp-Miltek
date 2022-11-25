@@ -57,7 +57,6 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
-		checkIfBootcampsExistById(request.getId());
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
 		UpdateBootcampsResponse response = mapperService.forResponse().map(bootcamps, UpdateBootcampsResponse.class);

@@ -61,7 +61,6 @@ public class BlacklistManager implements BlacklistService {
 
 	@Override
 	public DataResult<UpdateBlacklistResponse> update(UpdateBlacklistRequest request) {
-		checkIfBlacklistExistById(request.getApplicantId());
 		Blacklist blacklist = mapperService.forRequest().map(request, Blacklist.class);
 		blacklistRepository.save(blacklist);
 		UpdateBlacklistResponse response = mapperService.forResponse().map(blacklist, UpdateBlacklistResponse.class);

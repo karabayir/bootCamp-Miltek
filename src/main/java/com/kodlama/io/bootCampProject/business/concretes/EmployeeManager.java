@@ -71,7 +71,6 @@ public class EmployeeManager implements EmployeeService{
 
 	@Override
 	public DataResult<UpdateEmployeeResponse> update(UpdateEmployeeRequest request) {
-		checkIfEmployeeExistById(request.getId());
 		Employee employee = mapperService.forRequest().map(request, Employee.class);
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		employeeRepository.save(employee);
