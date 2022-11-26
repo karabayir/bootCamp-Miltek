@@ -1,5 +1,6 @@
 package com.kodlama.io.bootCampProject.business.concretes;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,7 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<CreateBootcampsResponse> add(CreateBootcampsRequest request) {
+		checkIfBootcampsDateAdd(request);
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcamps.setId(0);
 		bootcampsRepository.save(bootcamps);
@@ -57,6 +59,7 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
+		checkIfBootcampsDateUpdate(request);
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
 		UpdateBootcampsResponse response = mapperService.forResponse().map(bootcamps, UpdateBootcampsResponse.class);
@@ -72,6 +75,16 @@ public class BootcampsManager implements BootcampsService {
 	private void checkIfBootcampsExistById(int id) {
 		if(bootcampsRepository.getBootcampsById(id) == null)
 			throw new BusinessException(id+Messages.BootcampsIdException);
+	}
+	
+	private void checkIfBootcampsDateAdd(CreateBootcampsRequest request) {
+		if(request.getDateEnd().isBefore(request.getDateStart()))
+			throw new BusinessException("tarih hatası");
+	}
+	
+	private void checkIfBootcampsDateUpdate(UpdateBootcampsRequest request) {
+		if(request.getDateEnd().isBefore(request.getDateStart()))
+			throw new BusinessException("tarih hatası");
 	}
 	
 	@Override
