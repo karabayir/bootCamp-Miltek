@@ -2,6 +2,7 @@ package com.kodlama.io.bootCampProject.business.requests;
 
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,6 +31,7 @@ public class CreateEmployeeRequest {
 	private String lastName;
 	
 	@NotNull(message = Messages.MailBlankException)
+	@Email
 	private String email;
 	
 	@NotNull(message = Messages.PasswordBlankException)
