@@ -1,7 +1,6 @@
 package com.kodlama.io.bootCampProject.business.concretes;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
-import com.kodlama.io.bootCampProject.business.requests.CreateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.CreateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.UpdateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.CreateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetAllBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.UpdateBootcampsResponse;
 import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
@@ -24,7 +23,6 @@ import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessDataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessResult;
 import com.kodlama.io.bootCampProject.entities.Bootcamps;
-import com.kodlama.io.bootCampProject.entities.BootcampsState;
 import com.kodlama.io.bootCampProject.repository.BootcampsRepository;
 
 import lombok.AllArgsConstructor;
@@ -64,6 +62,7 @@ public class BootcampsManager implements BootcampsService {
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
 		//checkIfBootcampsDateUpdate(request);
+		checkIfBootcampsExistById(request.getId());
 		checkIfDateException(request.getDateStart(), request.getDateEnd());
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
@@ -75,6 +74,11 @@ public class BootcampsManager implements BootcampsService {
 		checkIfBootcampsExistById(id);
 		bootcampsRepository.deleteById(id);
 		return new SuccessResult(Messages.BootcampsDeleted);
+	}
+	
+	@Override
+	public Bootcamps getBootcampsById(int id) {
+		return bootcampsRepository.findById(id).orElseThrow();
 	}
 	
 	private void checkIfBootcampsExistById(int id) {
@@ -93,16 +97,12 @@ public class BootcampsManager implements BootcampsService {
 	}*/
 	
 	//designed by @torukobyte
+	
 	private void checkIfDateException(@NotNull LocalDate startDate, LocalDate endDate) { 
 		if(endDate.isBefore(startDate))
 			throw new BusinessException(Messages.BootcampsDateException);
 	}
 	
-	@Override
-	public void checkIfBootcampIsActive(int id) {
-		Bootcamps bootcamps = bootcampsRepository.findById(id).orElseThrow();
-		if(bootcamps.getState()== BootcampsState.CLOSED)
-			throw new BusinessException(Messages.BootcampActiveException);
-	}
+	
 	
 }

@@ -5,15 +5,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.kodlama.io.bootCampProject.business.abstracts.ApplicationsService;
 import com.kodlama.io.bootCampProject.business.abstracts.BlacklistService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
-import com.kodlama.io.bootCampProject.business.requests.CreateBlacklistRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateBlacklistRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateBlacklistResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllBlacklistResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetBlackListResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateBlacklistResponse;
+import com.kodlama.io.bootCampProject.business.requests.blacklist.CreateBlacklistRequest;
+import com.kodlama.io.bootCampProject.business.requests.blacklist.UpdateBlacklistRequest;
+import com.kodlama.io.bootCampProject.business.responses.blacklist.CreateBlacklistResponse;
+import com.kodlama.io.bootCampProject.business.responses.blacklist.GetAllBlacklistResponse;
+import com.kodlama.io.bootCampProject.business.responses.blacklist.GetBlackListResponse;
+import com.kodlama.io.bootCampProject.business.responses.blacklist.UpdateBlacklistResponse;
 import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
@@ -61,6 +60,7 @@ public class BlacklistManager implements BlacklistService {
 
 	@Override
 	public DataResult<UpdateBlacklistResponse> update(UpdateBlacklistRequest request) {
+		checkIfBlacklistExistById(request.getId());
 		Blacklist blacklist = mapperService.forRequest().map(request, Blacklist.class);
 		blacklistRepository.save(blacklist);
 		UpdateBlacklistResponse response = mapperService.forResponse().map(blacklist, UpdateBlacklistResponse.class);
@@ -74,6 +74,7 @@ public class BlacklistManager implements BlacklistService {
 
 	@Override
 	public Result delete(int id) {
+		checkIfBlacklistExistById(id);
 		blacklistRepository.deleteById(id);
 		return new SuccessResult(Messages.BlacklistDeleted);
 	}

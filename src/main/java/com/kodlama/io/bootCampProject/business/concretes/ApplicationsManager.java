@@ -9,20 +9,21 @@ import com.kodlama.io.bootCampProject.business.abstracts.ApplicationsService;
 import com.kodlama.io.bootCampProject.business.abstracts.BlacklistService;
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
-import com.kodlama.io.bootCampProject.business.requests.CreateApplicationsRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateApplicationsRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateApplicationResponse;
+import com.kodlama.io.bootCampProject.business.requests.applications.CreateApplicationsRequest;
+import com.kodlama.io.bootCampProject.business.requests.applications.UpdateApplicationsRequest;
+import com.kodlama.io.bootCampProject.business.responses.applications.CreateApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.GetAllApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.GetApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.UpdateApplicationResponse;
 import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessDataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.SuccessResult;
+import com.kodlama.io.bootCampProject.entities.Bootcamps;
+import com.kodlama.io.bootCampProject.entities.BootcampsState;
 import com.kodlama.io.bootCampProject.entities.applications.Applications;
-import com.kodlama.io.bootCampProject.entities.users.User;
 import com.kodlama.io.bootCampProject.repository.ApplicationsRepository;
 
 import lombok.AllArgsConstructor;
@@ -34,9 +35,8 @@ public class ApplicationsManager implements ApplicationsService {
 	private final ApplicationsRepository applicationsRepository;
 	private final ModelMapperService mapperService;
 	private final BlacklistService blacklistService;
+	private final BootcampsService bootcampsService;
 
-	
-	private BootcampsService bootcampsService;
 	@Override
 	public DataResult<List<GetAllApplicationsResponse>> getAll() {
 		List<GetAllApplicationsResponse> response = applicationsRepository.findAll()
@@ -56,7 +56,7 @@ public class ApplicationsManager implements ApplicationsService {
 	public DataResult<CreateApplicationsResponse> add(CreateApplicationsRequest request) {
 		checkIfUserBlacklist(request.getUserId());
 		checkIfUserHasApplication(request.getUserId());
-		bootcampsService.checkIfBootcampIsActive(request.getBootcampsId());
+		checkIfBootcampIsActive(request.getBootcampsId());
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applications.setId(0);
 		applicationsRepository.save(applications);
@@ -65,6 +65,7 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<UpdateApplicationResponse> update(UpdateApplicationsRequest request) {
+		checkIfApplicationsExistById(request.getId());
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applicationsRepository.save(applications);
 		UpdateApplicationResponse response = mapperService.forResponse().map(applications, UpdateApplicationResponse.class);
@@ -92,5 +93,9 @@ public class ApplicationsManager implements ApplicationsService {
 			throw new BusinessException(id+" numaralı kullanıcı karalistede");
 	}
 
-	
+	private void checkIfBootcampIsActive(int bootcampsId) {
+		Bootcamps bootcamps = bootcampsService.getBootcampsById(bootcampsId);
+		if(bootcamps.getState()== BootcampsState.CLOSED)
+			throw new BusinessException(Messages.BootcampActiveException);
+	}
 }

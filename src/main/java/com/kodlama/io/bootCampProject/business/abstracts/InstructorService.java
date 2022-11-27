@@ -2,13 +2,13 @@ package com.kodlama.io.bootCampProject.business.abstracts;
 
 import java.util.List;
 
-import com.kodlama.io.bootCampProject.business.requests.CreateInstructorRequest;
-import com.kodlama.io.bootCampProject.business.requests.GetInstructorRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateInstructorRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateInstructorResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllInstructorResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetInstructorResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateInstructorResponse;
+import com.kodlama.io.bootCampProject.business.requests.instructor.CreateInstructorRequest;
+import com.kodlama.io.bootCampProject.business.requests.instructor.GetInstructorRequest;
+import com.kodlama.io.bootCampProject.business.requests.instructor.UpdateInstructorRequest;
+import com.kodlama.io.bootCampProject.business.responses.instructor.CreateInstructorResponse;
+import com.kodlama.io.bootCampProject.business.responses.instructor.GetAllInstructorResponse;
+import com.kodlama.io.bootCampProject.business.responses.instructor.GetInstructorResponse;
+import com.kodlama.io.bootCampProject.business.responses.instructor.UpdateInstructorResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 

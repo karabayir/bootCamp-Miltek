@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.EmployeeService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
-import com.kodlama.io.bootCampProject.business.requests.CreateEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.requests.GetEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.requests.employee.CreateEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.requests.employee.GetEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.requests.employee.UpdateEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.responses.employee.CreateEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.GetAllEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.GetEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.UpdateEmployeeResponse;
 import com.kodlama.io.bootCampProject.core.utilities.exceptions.BusinessException;
 import com.kodlama.io.bootCampProject.core.utilities.mapping.ModelMapperService;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
@@ -71,6 +71,7 @@ public class EmployeeManager implements EmployeeService{
 
 	@Override
 	public DataResult<UpdateEmployeeResponse> update(UpdateEmployeeRequest request) {
+		checkIfEmployeeExistById(request.getId());
 		Employee employee = mapperService.forRequest().map(request, Employee.class);
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		employeeRepository.save(employee);

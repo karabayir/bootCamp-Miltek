@@ -2,14 +2,15 @@ package com.kodlama.io.bootCampProject.business.abstracts;
 
 import java.util.List;
 
-import com.kodlama.io.bootCampProject.business.requests.CreateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.CreateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.UpdateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.CreateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetAllBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.UpdateBootcampsResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
+import com.kodlama.io.bootCampProject.entities.Bootcamps;
 
 public interface BootcampsService {
 
@@ -23,6 +24,5 @@ public interface BootcampsService {
 	
 	Result delete(int id);
 	
-	void checkIfBootcampIsActive(int id);
-	
+	 Bootcamps getBootcampsById(int id);
 }

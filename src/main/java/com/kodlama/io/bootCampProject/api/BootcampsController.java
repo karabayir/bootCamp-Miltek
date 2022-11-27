@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
-import com.kodlama.io.bootCampProject.business.requests.CreateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateBootcampsRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetBootcampsResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.CreateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.requests.bootcamps.UpdateBootcampsRequest;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.CreateBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetAllBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.GetBootcampsResponse;
+import com.kodlama.io.bootCampProject.business.responses.bootcamps.UpdateBootcampsResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 

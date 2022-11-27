@@ -2,13 +2,13 @@ package com.kodlama.io.bootCampProject.business.abstracts;
 
 import java.util.List;
 
-import com.kodlama.io.bootCampProject.business.requests.CreateEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.requests.GetEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateEmployeeRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllEmployeeResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.requests.employee.CreateEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.requests.employee.GetEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.requests.employee.UpdateEmployeeRequest;
+import com.kodlama.io.bootCampProject.business.responses.employee.CreateEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.GetAllEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.GetEmployeeResponse;
+import com.kodlama.io.bootCampProject.business.responses.employee.UpdateEmployeeResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 

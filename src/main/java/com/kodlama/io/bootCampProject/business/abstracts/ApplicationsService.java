@@ -2,12 +2,12 @@ package com.kodlama.io.bootCampProject.business.abstracts;
 
 import java.util.List;
 
-import com.kodlama.io.bootCampProject.business.requests.CreateApplicationsRequest;
-import com.kodlama.io.bootCampProject.business.requests.UpdateApplicationsRequest;
-import com.kodlama.io.bootCampProject.business.responses.CreateApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetAllApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.GetApplicationsResponse;
-import com.kodlama.io.bootCampProject.business.responses.UpdateApplicationResponse;
+import com.kodlama.io.bootCampProject.business.requests.applications.CreateApplicationsRequest;
+import com.kodlama.io.bootCampProject.business.requests.applications.UpdateApplicationsRequest;
+import com.kodlama.io.bootCampProject.business.responses.applications.CreateApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.GetAllApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.GetApplicationsResponse;
+import com.kodlama.io.bootCampProject.business.responses.applications.UpdateApplicationResponse;
 import com.kodlama.io.bootCampProject.core.utilities.results.DataResult;
 import com.kodlama.io.bootCampProject.core.utilities.results.Result;
 public interface ApplicationsService {
