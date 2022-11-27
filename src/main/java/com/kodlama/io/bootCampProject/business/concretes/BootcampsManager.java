@@ -1,8 +1,11 @@
 package com.kodlama.io.bootCampProject.business.concretes;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Service;
 
@@ -50,7 +53,8 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<CreateBootcampsResponse> add(CreateBootcampsRequest request) {
-		checkIfBootcampsDateAdd(request);
+		//checkIfBootcampsDateAdd(request);
+		checkIfDateException(request.getDateStart(), request.getDateEnd());
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcamps.setId(0);
 		bootcampsRepository.save(bootcamps);
@@ -59,7 +63,8 @@ public class BootcampsManager implements BootcampsService {
 	}
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
-		checkIfBootcampsDateUpdate(request);
+		//checkIfBootcampsDateUpdate(request);
+		checkIfDateException(request.getDateStart(), request.getDateEnd());
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
 		UpdateBootcampsResponse response = mapperService.forResponse().map(bootcamps, UpdateBootcampsResponse.class);
@@ -77,7 +82,7 @@ public class BootcampsManager implements BootcampsService {
 			throw new BusinessException(id+Messages.BootcampsIdException);
 	}
 	
-	private void checkIfBootcampsDateAdd(CreateBootcampsRequest request) {
+	/*private void checkIfBootcampsDateAdd(CreateBootcampsRequest request) {
 		if(request.getDateEnd().isBefore(request.getDateStart()))
 			throw new BusinessException("tarih hatası");
 	}
@@ -85,6 +90,12 @@ public class BootcampsManager implements BootcampsService {
 	private void checkIfBootcampsDateUpdate(UpdateBootcampsRequest request) {
 		if(request.getDateEnd().isBefore(request.getDateStart()))
 			throw new BusinessException("tarih hatası");
+	}*/
+	
+	//designed by @torukobyte
+	private void checkIfDateException(@NotNull LocalDate startDate, LocalDate endDate) { 
+		if(endDate.isBefore(startDate))
+			throw new BusinessException(Messages.BootcampsDateException);
 	}
 	
 	@Override

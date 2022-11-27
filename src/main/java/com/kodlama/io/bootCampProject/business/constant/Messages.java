@@ -30,6 +30,7 @@ public class Messages {
 	public static final String BootcampsDeleted = "Bootcamps deleted";
 	public static final String BootcampsIdException = " ,Bootcamps id is not exist";
 	public static final String BootcampActiveException = "Bootcamps is not active";
+	public static final String BootcampsDateException = "Bootcamps tarihleri uyumsuz.";
 	
 	public static final String BlacklistCreated = "Blacklist created";
 	public static final String BlacklistUpdated = "Blacklist updated";
