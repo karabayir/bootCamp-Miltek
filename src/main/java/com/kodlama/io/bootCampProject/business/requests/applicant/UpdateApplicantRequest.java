@@ -3,6 +3,7 @@ package com.kodlama.io.bootCampProject.business.requests.applicant;
 import java.time.LocalDate;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class UpdateApplicantRequest {
 
 	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
 	private int id;
 
 	@Size(min = 11 , max = 11 , message = Messages.NationalIdentityNumberSizeException)

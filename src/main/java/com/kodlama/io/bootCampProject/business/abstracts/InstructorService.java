@@ -26,4 +26,5 @@ public interface InstructorService {
 	
 	 Result delete(int id);
 	
+	 void checkIfInstructorExistById(int id);
 }

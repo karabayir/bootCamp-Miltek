@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateApplicationsResponse {
 	private int id;
-	private int userId;
+	private int applicantId;
 	private int bootcampsId;
 	private ApplicationsState state;
 	

@@ -53,7 +53,8 @@ public class ApplicantManager implements ApplicantService {
 	
 	@Override
 	public DataResult<GetApplicantResponse>  getById(int id) {
-		Applicant applicant = applicantRepository.findById(id).orElseThrow(() -> new BusinessException(id+Messages.ApplicantIdException));
+		checkIfApplicantExistById(id);
+		Applicant applicant = applicantRepository.findById(id).orElseThrow(/*() -> new BusinessException(id+Messages.ApplicantIdException)*/);
 		GetApplicantResponse response= mapperService.forResponse().map(applicant, GetApplicantResponse.class);
 		return new SuccessDataResult<GetApplicantResponse>(response, "getById");
 	}
@@ -69,6 +70,7 @@ public class ApplicantManager implements ApplicantService {
 	
 	@Override
 	public DataResult<UpdateApplicantResponse>  update(UpdateApplicantRequest request) {
+		checkIfApplicantExistById(request.getId());
 		Applicant applicant = mapperService.forRequest().map(request, Applicant.class);
 		checkIfApplicantExistByNationalIdentity(request.getNationalIdentity());
 		applicantRepository.save(applicant);
@@ -77,7 +79,7 @@ public class ApplicantManager implements ApplicantService {
 	}
 	@Override
 	public Result delete(int id) {
-		checkIfEmployeeExistById(id);
+		checkIfApplicantExistById(id);
 		applicantRepository.deleteById(id);
 		return new SuccessResult(Messages.ApplicantDeleted);
 	}
@@ -88,9 +90,9 @@ public class ApplicantManager implements ApplicantService {
 			throw new BusinessException(identity+ Messages.ApplicantNationalIdentityException);
 	}
 	
-	private void checkIfEmployeeExistById(int id) {
+	@Override
+	public void checkIfApplicantExistById(int id){
 		if(applicantRepository.getApplicantById(id) == null)
 			throw new BusinessException(id+Messages.ApplicantIdException);
 	}
-	
 }

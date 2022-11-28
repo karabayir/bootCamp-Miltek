@@ -25,4 +25,6 @@ public interface ApplicantService {
 	DataResult<UpdateApplicantResponse>  update(UpdateApplicantRequest request);
 	
 	Result delete(int id);
+	
+	void checkIfApplicantExistById(int id);
 }

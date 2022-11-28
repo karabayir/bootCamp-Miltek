@@ -49,6 +49,7 @@ public class Messages {
 	public static final String StateBlankException = "state boş bırakılamaz";
 	public static final String NameLengthException = "İsimi veya soyisim en az 3 karakter olmalıdır";
 	public static final String StringNullException = "Boş alan bırakılmamalıdır.";
+	public static final String IdMınimumException = "id 1'den küçük olamaz.";
 	
 	
 	

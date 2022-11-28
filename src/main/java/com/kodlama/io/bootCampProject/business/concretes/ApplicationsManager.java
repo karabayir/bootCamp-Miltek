@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.kodlama.io.bootCampProject.business.abstracts.ApplicantService;
 import com.kodlama.io.bootCampProject.business.abstracts.ApplicationsService;
 import com.kodlama.io.bootCampProject.business.abstracts.BlacklistService;
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
@@ -36,6 +37,7 @@ public class ApplicationsManager implements ApplicationsService {
 	private final ModelMapperService mapperService;
 	private final BlacklistService blacklistService;
 	private final BootcampsService bootcampsService;
+	private final ApplicantService applicantService;
 
 	@Override
 	public DataResult<List<GetAllApplicationsResponse>> getAll() {
@@ -54,9 +56,13 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<CreateApplicationsResponse> add(CreateApplicationsRequest request) {
-		checkIfUserBlacklist(request.getUserId());
-		checkIfUserHasApplication(request.getUserId());
+		
+		applicantService.checkIfApplicantExistById(request.getApplicantId());
+		checkIfApplicantBlacklist(request.getApplicantId());
+		bootcampsService.checkIfBootcampsExistById(request.getBootcampsId());
+		checkIfApplicantHasApplication(request.getApplicantId());
 		checkIfBootcampIsActive(request.getBootcampsId());
+		
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applications.setId(0);
 		applicationsRepository.save(applications);
@@ -65,7 +71,11 @@ public class ApplicationsManager implements ApplicationsService {
 	}
 	@Override
 	public DataResult<UpdateApplicationResponse> update(UpdateApplicationsRequest request) {
+		
 		checkIfApplicationsExistById(request.getId());
+		applicantService.checkIfApplicantExistById(request.getApplicantId());
+		bootcampsService.checkIfBootcampsExistById(request.getBootcampsId());
+		
 		Applications applications = mapperService.forRequest().map(request, Applications.class);
 		applicationsRepository.save(applications);
 		UpdateApplicationResponse response = mapperService.forResponse().map(applications, UpdateApplicationResponse.class);
@@ -83,19 +93,19 @@ public class ApplicationsManager implements ApplicationsService {
 			throw new BusinessException(id+Messages.ApplicationIdException);
 	}
 	
-	private void  checkIfUserHasApplication(int id) {
-		if(applicationsRepository.existsApplicationsByUserId(id))
+	private void  checkIfApplicantHasApplication(int id) {
+		if(applicationsRepository.existsApplicationsByApplicantId(id))
 			throw new BusinessException(id+Messages.UserHasApplication);
 	}
 	
-	private void  checkIfUserBlacklist(int id) {
+	private void  checkIfApplicantBlacklist(int id) {
 		if(blacklistService.existsBlacklistByApplicantId(id))
 			throw new BusinessException(id+" numaralı kullanıcı karalistede");
 	}
 
 	private void checkIfBootcampIsActive(int bootcampsId) {
 		Bootcamps bootcamps = bootcampsService.getBootcampsById(bootcampsId);
-		if(bootcamps.getState()== BootcampsState.CLOSED)
+		if(bootcamps.getState().equals(BootcampsState.CLOSED))
 			throw new BusinessException(Messages.BootcampActiveException);
 	}
 }

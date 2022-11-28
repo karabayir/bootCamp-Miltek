@@ -2,7 +2,7 @@ package com.kodlama.io.bootCampProject.business.requests.bootcamps;
 
 import java.time.LocalDate;
 
-
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -33,5 +33,6 @@ public class CreateBootcampsRequest {
 	private BootcampsState state;
 	
 	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
 	private int instructorId;
 }

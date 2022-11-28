@@ -10,10 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 import com.kodlama.io.bootCampProject.entities.Bootcamps;
-import com.kodlama.io.bootCampProject.entities.BootcampsState;
-import com.kodlama.io.bootCampProject.entities.users.User;
+import com.kodlama.io.bootCampProject.entities.users.Applicant;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,8 +28,8 @@ public class Applications {
 	private int id;
 	
 	@ManyToOne()
-	@JoinColumn(name="user_id")
-	private User user;
+	@JoinColumn(name="applicant_id")
+	private Applicant applicant;
 	
 	@ManyToOne
 	@JoinColumn(name = "bootcamps_id")

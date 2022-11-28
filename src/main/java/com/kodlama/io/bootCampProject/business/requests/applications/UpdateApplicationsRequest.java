@@ -1,6 +1,7 @@
 package com.kodlama.io.bootCampProject.business.requests.applications;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.entities.applications.ApplicationsState;
@@ -14,15 +15,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateApplicationsRequest {
 	
-	@NotBlank(message = Messages.IdBlankException)
+	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
 	private int id;
 	
-	@NotBlank(message = Messages.IdBlankException)
-	private int userId;
+	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
+	private int applicantId;
 	
-	@NotBlank(message = Messages.IdBlankException)
+	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
 	private int bootcampsId;
 	
-	@NotBlank(message = Messages.StateBlankException)
+	@NotNull(message = Messages.StateBlankException)
 	private ApplicationsState state;
 }

@@ -8,7 +8,6 @@ public interface  ApplicationsRepository  extends JpaRepository<Applications, In
 
 	Applications getApplicationById(int id);
 	
-	 boolean existsApplicationsByUserId(int userId);
+	 boolean existsApplicationsByApplicantId(int applicantId);
 	 
-	//void deleteApplicationsByUserId(int userId);
 }

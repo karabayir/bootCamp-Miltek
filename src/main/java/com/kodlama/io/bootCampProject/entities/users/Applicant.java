@@ -1,6 +1,5 @@
 package com.kodlama.io.bootCampProject.entities.users;
 
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

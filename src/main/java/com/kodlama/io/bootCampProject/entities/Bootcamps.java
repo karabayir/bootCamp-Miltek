@@ -1,8 +1,6 @@
 package com.kodlama.io.bootCampProject.entities;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,9 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.kodlama.io.bootCampProject.entities.applications.Applications;
 import com.kodlama.io.bootCampProject.entities.users.Instructor;
 
 import lombok.AllArgsConstructor;
@@ -42,7 +37,5 @@ public class Bootcamps {
 	@Enumerated(EnumType.STRING)
 	private BootcampsState state;
 	
-	@OneToMany(mappedBy = "bootcamps")
-	private List<Applications> applications;
 
 }

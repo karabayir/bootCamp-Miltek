@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.kodlama.io.bootCampProject.business.abstracts.ApplicantService;
 import com.kodlama.io.bootCampProject.business.abstracts.BlacklistService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.blacklist.CreateBlacklistRequest;
@@ -30,6 +31,7 @@ public class BlacklistManager implements BlacklistService {
 	
 	private final BlacklistRepository blacklistRepository;
 	private final ModelMapperService mapperService;
+	private final ApplicantService applicantService;
 	
 
 	@Override
@@ -51,6 +53,7 @@ public class BlacklistManager implements BlacklistService {
 
 	@Override
 	public DataResult<CreateBlacklistResponse> add(CreateBlacklistRequest request) {
+		applicantService.checkIfApplicantExistById(request.getApplicantId());
 		Blacklist blacklist = mapperService.forRequest().map(request, Blacklist.class);
 		blacklist.setId(0);
 		blacklistRepository.save(blacklist);
@@ -61,6 +64,7 @@ public class BlacklistManager implements BlacklistService {
 	@Override
 	public DataResult<UpdateBlacklistResponse> update(UpdateBlacklistRequest request) {
 		checkIfBlacklistExistById(request.getId());
+		applicantService.checkIfApplicantExistById(request.getApplicantId());
 		Blacklist blacklist = mapperService.forRequest().map(request, Blacklist.class);
 		blacklistRepository.save(blacklist);
 		UpdateBlacklistResponse response = mapperService.forResponse().map(blacklist, UpdateBlacklistResponse.class);

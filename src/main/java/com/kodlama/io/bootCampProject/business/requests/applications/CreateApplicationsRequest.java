@@ -1,6 +1,7 @@
 package com.kodlama.io.bootCampProject.business.requests.applications;
 
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.kodlama.io.bootCampProject.business.constant.Messages;
@@ -16,9 +17,11 @@ import lombok.NoArgsConstructor;
 public class CreateApplicationsRequest {
 
 	@NotNull(message = Messages.IdBlankException)
-	private int userId;
+	@Min(value = 1 , message = Messages.IdMınimumException)
+	private int applicantId;
 	
 	@NotNull(message = Messages.IdBlankException)
+	@Min(value = 1 , message = Messages.IdMınimumException)
 	private int bootcampsId;
 	
 	@NotNull(message = Messages.StateBlankException)

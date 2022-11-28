@@ -24,5 +24,7 @@ public interface BootcampsService {
 	
 	Result delete(int id);
 	
-	 Bootcamps getBootcampsById(int id);
+	Bootcamps getBootcampsById(int id);
+	
+	void checkIfBootcampsExistById(int id);
 }

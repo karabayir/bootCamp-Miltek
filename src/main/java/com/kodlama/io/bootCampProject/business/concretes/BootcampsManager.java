@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import com.kodlama.io.bootCampProject.business.abstracts.BootcampsService;
+import com.kodlama.io.bootCampProject.business.abstracts.InstructorService;
 import com.kodlama.io.bootCampProject.business.constant.Messages;
 import com.kodlama.io.bootCampProject.business.requests.bootcamps.CreateBootcampsRequest;
 import com.kodlama.io.bootCampProject.business.requests.bootcamps.UpdateBootcampsRequest;
@@ -33,6 +34,7 @@ public class BootcampsManager implements BootcampsService {
 
 	private final BootcampsRepository bootcampsRepository;
 	private final ModelMapperService mapperService;
+	private final InstructorService instructorService;
 	
 	@Override
 	public DataResult<List<GetAllBootcampsResponse>> getAll() {
@@ -62,8 +64,11 @@ public class BootcampsManager implements BootcampsService {
 	@Override
 	public DataResult<UpdateBootcampsResponse> update(UpdateBootcampsRequest request) {
 		//checkIfBootcampsDateUpdate(request);
+		
 		checkIfBootcampsExistById(request.getId());
 		checkIfDateException(request.getDateStart(), request.getDateEnd());
+		instructorService.checkIfInstructorExistById(request.getInstructorId());
+		
 		Bootcamps bootcamps = mapperService.forRequest().map(request, Bootcamps.class);
 		bootcampsRepository.save(bootcamps);
 		UpdateBootcampsResponse response = mapperService.forResponse().map(bootcamps, UpdateBootcampsResponse.class);
@@ -78,10 +83,11 @@ public class BootcampsManager implements BootcampsService {
 	
 	@Override
 	public Bootcamps getBootcampsById(int id) {
-		return bootcampsRepository.findById(id).orElseThrow();
+		return bootcampsRepository.getBootcampsById(id);
 	}
 	
-	private void checkIfBootcampsExistById(int id) {
+	@Override
+	public void checkIfBootcampsExistById(int id) {
 		if(bootcampsRepository.getBootcampsById(id) == null)
 			throw new BusinessException(id+Messages.BootcampsIdException);
 	}

@@ -75,6 +75,7 @@ public class InstructorManager implements InstructorService {
 
 	@Override
 	public DataResult<UpdateInstructorResponse>  update(UpdateInstructorRequest request) {
+		checkIfInstructorExistById(request.getId());
 		Instructor instructor = mapperService.forRequest().map(request, Instructor.class);
 		instructorRepository.save(instructor);
 		UpdateInstructorResponse response= mapperService.forResponse().map(instructor, UpdateInstructorResponse.class);
@@ -93,7 +94,8 @@ public class InstructorManager implements InstructorService {
 			throw new BusinessException(identity+ Messages.InstructorNationalIdentityException);
 	}
 	
-	private void checkIfInstructorExistById(int id) {
+	@Override
+	public void checkIfInstructorExistById(int id) {
 		if(instructorRepository.getInstructorById(id) == null)
 			throw new BusinessException(id+Messages.InstructorIdException);
 	}
